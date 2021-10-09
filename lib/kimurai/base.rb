@@ -123,7 +123,7 @@ module Kimurai
       if start_urls
         start_urls.each do |start_url|
           if start_url.class == Hash
-            spider.request_to(:parse, start_url)
+            spider.request_to(:parse, **start_url)
           else
             spider.request_to(:parse, url: start_url)
           end
