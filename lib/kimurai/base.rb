@@ -118,7 +118,7 @@ module Kimurai
       if start_urls
         start_urls.each do |start_url|
           if start_url.class == Hash
-            spider.request_to(:parse, start_url)
+            spider.request_to(:parse, **start_url)
           else
             spider.request_to(:parse, url: start_url)
           end
@@ -154,7 +154,7 @@ module Kimurai
       if args.present?
         spider.public_send(handler, *args)
       elsif request.present?
-        spider.request_to(handler, request)
+        spider.request_to(handler, **request)
       else
         spider.public_send(handler)
       end
@@ -196,7 +196,9 @@ module Kimurai
       visited = delay ? browser.visit(url, delay: delay) : browser.visit(url)
       return unless visited
 
-      public_send(handler, browser.current_response(response_type), { url: url, data: data })
+      options =  { url: url, data: data }
+
+      public_send(handler, browser.current_response(response_type), **options)
     end
 
     def console(response = nil, url: nil, data: {})
